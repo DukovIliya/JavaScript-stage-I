@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Основы Java Script! Домашнее задание №3</h1>
+
+    <script>//1. С помощью цикла while вывести все простые числа в промежутке от 0 до 100.
+        var i = 1, n = 100;
+        const primeNumbers = [];
+
+        nextstep:
+        while (i < n) {
+            i++;
+            let j = 2;
+            while (j < i) {
+                if (i % j === 0) {
+                    continue nextstep;
+                }
+                j++;
+            }
+            primeNumbers.push(i);
+        }
+        console.log(primeNumbers);
+    </script>
+
+    <script>/*2. Товары в корзине хранятся в массиве. Задачи:
+a) Организовать такой массив для хранения товаров в корзине;
+b) Организовать функцию countBasketPrice, которая будет считать стоимость корзины.*/
+
+        var cart = [
+            ['Рамбутан', 1.340, 670.00],
+            ['Питахайя', 1.01, 899.99],
+            ['Личи', 2.015, 310.00],
+            ['Карамбола', 0.833, 400.00],
+            ['Гуава', 1.23, 930.00],
+            ['тест', , 930.00],
+            ['тест', 0, 930.00],
+            ['тест', 'тест', 930.00]
+        ];
+
+        function countBasketPrice(arr) {
+            let costall = 0;
+            arr.forEach(function gc(element) {
+                let cost = element[1] * element[2]
+                cost = Math.round(cost * 100) / 100;
+                if (!isNaN(cost)) costall = costall + cost;
+            })
+            return costall;
+        }
+
+        console.log('итого товаров на сумму: ' + countBasketPrice(cart));
+
+    </script>
+
+    <script>//4.*Вывести с помощью цикла for числа от 0 до 9, не используя тело цикла.
+        for (var i = 0; i < 10; console.log(i), i++) { }
+    </script>
+
+    <script>//5. 5. *Нарисовать пирамиду с помощью console.log, как показано на рисунке, только у вашей пирамиды должно быть 20 рядов, а не 5
+        for (var i = 1; i <= 20; i++) {
+            console.log('x'.repeat(i));
+        }
+    </script>
+
+</body>
+
+</html>
