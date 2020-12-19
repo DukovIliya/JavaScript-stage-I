@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Основы Java Script! Домашнее задание №4</h1>
+    <script>//1. Написать функцию, преобразующую число в объект. Передавая на вход  число от 0 до 999, мы должны получить на выходе объект, в котором в соответствующих свойствах описаны единицы, десятки и сотни. Например, для числа 245 мы должны получить следующий объект: {‘единицы’: 5, ‘десятки’: 4, ‘сотни’: 2}. Если число превышает 999, необходимо выдать соответствующее сообщение с помощью console.log и вернуть пустой объект.
+
+        function getNameRank(i) {
+            switch (i) {
+                case 1: return 'Единицы'; break;
+                case 2: return 'Десятки'; break;
+                case 3: return 'Сотни'; break;
+                case 4: return 'Тысячи'; break;
+                case 5: return 'Десятки тысяч'; break;
+                case 6: return 'Сотни тысяч'; break;
+                case 7: return 'Миллионы'; break;
+                case 8: return 'Десятки миллионов'; break;
+                case 9: return 'Сотни миллионов'; break;
+                default: return 'очень много';
+            }
+        }
+
+        function getListNumbers(inputNum, maxnum) {
+            const listNumber = {};
+            if (inputNum > maxnum) {
+                console.log('Введите число поменьше.');
+            }
+            else {
+                let tmp;
+                let i = 1;
+                while (maxnum > 0) {
+                    tmp = inputNum * 0.1;
+                    inputNum = (Math.floor(tmp));
+                    tmp = tmp % 1;
+                    tmp = Math.round(tmp * 10);
+                    listNumber[getNameRank(i)] = tmp;
+                    i++;
+                    maxnum = Math.floor(maxnum * 0.1);
+                }
+            }
+            return listNumber;
+        }
+        console.log(getListNumbers(654, 999));
+        console.log(getListNumbers(12, 999));
+        console.log(getListNumbers(0, 999));
+        console.log(getListNumbers(7987654321, 99999999999));
+
+    </script>
+
+    <script>//В прошлом домашнем задании вы реализовали корзину на базе массивов. Какими объектами можно заменить их элементы?
+        //Реализуйте такие объекты.
+        var cart = {
+            goods: [
+                {
+                    name: 'Рамбутан',
+                    quant: 1.340,
+                    price: 670.00
+                },
+                {
+                    name: 'Питахайя',
+                    quant: 1.01,
+                    price: 899.99
+                },
+                {
+                    name: 'Личи',
+                    quant: 2.015,
+                    price: 310.00
+                },
+                {
+                    name: 'Карамбола',
+                    quant: 0.833,
+                    price: 400.00
+                },
+                {
+                    name: 'Гуава',
+                    quant: 1.23,
+                    price: 930.00
+                }
+            ],
+            getSumCart() {//получить сумму товаров в корзине
+                let costall = 0;
+                this.goods.forEach(function (curgoogs) {
+                    let cost = curgoogs.quant * curgoogs.price;
+                    cost = Math.round(cost * 100) / 100;
+                    if (!isNaN(cost)) costall += cost;
+                })
+                return costall;
+            },
+
+            addGoodsToCart(name, quant, price) { //добавить товар в корзину
+                return (this.goods.push({
+                    name: name,
+                    quant: quant,
+                    price: price
+                }))
+            },
+
+            removeGoodsOutCart(index) { //удалить один элемент из корзины по индексу
+                return (this.goods.splice(index, 1));
+            },
+
+            weightGoodsInCart() {//получить вес всех товаров в корзине
+                let weight = 0;
+                for (let i of this.goods) {
+                    weight += i.quant;
+                }
+                return weight;
+            }
+        }
+
+        console.log(cart.getSumCart());
+        console.log(cart.addGoodsToCart('Киви', 1.01, 160.00));
+        console.log(cart);
+        console.log(cart.addGoodsToCart('Авокадо', 0.41, 310));
+        console.log(cart);
+        console.log(cart.removeGoodsOutCart(2));
+        console.log(cart.weightGoodsInCart());
+
+
+    </script>
+
+</body>
+
+</html>
