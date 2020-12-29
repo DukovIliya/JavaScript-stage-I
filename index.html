@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игрушки для папы</title>
+</head>
+<style>
+    h3 {
+        text-align: center;
+    }
+
+    #storage {
+        display: flex;
+        align-content: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+
+    }
+
+    .storage-item {
+        margin: 10px;
+        padding: 5px;
+        border: 1px solid rgb(173, 144, 144);
+    }
+
+    .item-nav {
+        width: 250px;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(202, 194, 194);
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+
+    img {
+        opacity: 0.75;
+    }
+
+    img:hover {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    /*отображение картинки*/
+    .galleryWrapper__screen {
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #222;
+        opacity: 0.8;
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        display: block;
+        text-align: center;
+    }
+
+    .galleryWrapper__image {
+        max-height: 80%;
+        max-width: 80%;
+        z-index: 101;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<body>
+    <h3><b>Каталог игрушек</b></h3>
+    <div id="storage">
+        <div class="galleryWrapper hidden">
+            <div class="galleryWrapper__screen"></div>
+        </div>
+    </div>
+    <hr>
+    <h3><b>Корзина</b></h3>
+    <div id="battlefield"></div>
+</body>
+<script>
+
+    outfit = {
+        itemCatalogHTML(arms) {
+            return `<div class = "storage-item">
+                <div class= "item-nav">
+                    <button data-armidrem = ${this.getArmsOfCatalogById(arms).id}>-</button>
+                    <img class = "${this.nameClassPhoto}" src="img/id_${this.getArmsOfCatalogById(arms).id}_min.jpg" data-imgarmid = ${this.getArmsOfCatalogById(arms).id} alt="${this.getArmsOfCatalogById(arms).armsname}">
+                    <button data-armid = ${this.getArmsOfCatalogById(arms).id}>+</button>
+                    </div>
+                    <h4>${this.getArmsOfCatalogById(arms).armsname}</h4>
+                    <span>Стоимость:</span><span><b>${this.getArmsOfCatalogById(arms).price}</b> маней</span>
+                </div>`
+        },
+        nameContainerArms: 'storage',
+        nameContainerBattle: 'battlefield',
+        nameClassPhoto: 'armsphoto',
+        tempFlag: false,
+
+        catalogArms: [
+            {
+                id: 1,
+                armsname: 'Волынка',
+                price: 1000,
+            },
+            {
+                id: 2,
+                armsname: 'Пистолет',
+                price: 2500,
+            },
+            {
+                id: 3,
+                armsname: 'Винтовка',
+                price: 4000,
+            },
+            {
+                id: 4,
+                armsname: 'Гранотомет',
+                price: 3000,
+            },
+            {
+                id: 5,
+                armsname: 'Лук',
+                price: 500,
+            }
+        ],
+        cartArms: [],
+
+        init() {
+            var eventsElement = document.getElementById(this.nameContainerArms);
+            eventsElement.addEventListener('click', event => this.clickAddArms(event));
+            eventsElement.addEventListener('click', event => this.clickRemoveArms(event));
+            eventsElement.addEventListener('click', event => this.showBigImage(event));
+            this.renderAllCatalog();
+            this.renderAllCartArms();
+        },
+
+        renderCatalogById(armid) {
+            var container = document.getElementById(this.nameContainerArms);
+            container.insertAdjacentHTML('beforeend', this.itemCatalogHTML(armid));
+        },
+
+        showBigImage(event) {
+            if (event.target.className != this.nameClassPhoto) return;
+            console.log(event.target.alt);
+            var obj = document.querySelector('.galleryWrapper');
+            var src = `img/id_${+event.target.dataset.imgarmid}.jpg`
+            //if (!this.imgExist(src)) src = "img/noimg.jpg";
+            this.imgExist(src);
+            if (!this.tempFlag) src = "img/noimg.jpg";
+            //проверка на наличие картинки не работает
+
+
+            obj.insertAdjacentHTML('beforeend', `<img class="galleryWrapper__image" src="${src}" alt="Фото не найдено. Нажми чтобы закрыть!">`);
+            document.querySelector('.galleryWrapper__image').addEventListener('click', (event) => this.clickClose(event));
+            this.changeClassHidden('galleryWrapper');
+        },
+        imgExist(imgurl) {
+            let result = true;
+            var img = new Image();
+            img.src = imgurl;
+            //img.onerror = function () { return false; };
+            this.tempFlag = true;
+            img.onerror = function () { this.tempFlag = false; };
+            //Тут не смог нормально проверить существование картинки.Даже через костыль не работает :(
+        },
+
+        clickClose(event) {
+            this.changeClassHidden('galleryWrapper');
+            document.querySelector('.galleryWrapper__image').remove();
+        },
+        changeClassHidden(className) {
+            //className = 'galleryWrapper' ;
+            var obj = document.querySelector('.' + className);
+            obj.classList.toggle('hidden');
+        },
+
+
+        renderAllCatalog() {
+            for (let i of this.catalogArms) {
+                this.renderCatalogById(i.id)
+            }
+        },
+
+        getArmsOfCatalogById(armid) {
+            for (let i of this.catalogArms) {
+                if (i.id === armid) return i;
+            }
+
+        },
+
+        clickAddArms(event) {
+            var armid = +event.target.dataset.armid
+            if (!armid > 0) return;
+            this.addArmsToCart(armid, this.getArmsOfCatalogById(armid).armsname, 1, this.getArmsOfCatalogById(armid).price);
+            this.renderAllCartArms();
+        },
+        clickRemoveArms(event) {
+            var armid = +event.target.dataset.armidrem
+            if (!armid > 0) return;
+            this.removeArmsToCart(armid, 1);
+            this.renderAllCartArms();
+        },
+
+
+        //методы корзины
+        getArmsOfCartById(armid) {
+            for (let i of this.cartArms) {
+                if (i.id === armid) return i;
+            }
+        },
+        getIndexElementCartArmsById(armid) {
+            for (let i = 0; i < this.cartArms.length; i++)
+                if (this.cartArms[i].id === armid) return i
+        },
+        getCostCartArms() {
+            var costall = 0;
+            for (let i of this.cartArms)
+                costall += i.price * i.count;
+            return costall;
+        },
+        getQuantCartArt() {
+            var quantity = 0;
+            for (let i of this.cartArms)
+                quantity += i.count;
+            return quantity;
+
+        },
+
+        addArmsToCart(armid, armsname, count, price) {
+            var element = this.getArmsOfCartById(armid);
+            if (element === undefined)
+                this.cartArms.push({
+                    id: armid,
+                    armsname: armsname,
+                    count: count,
+                    price: price,
+                })
+            else {
+                this.cartArms[this.getIndexElementCartArmsById(armid)] = {
+                    id: armid,
+                    armsname: armsname,
+                    count: element.count + count,
+                    price: price,
+                };
+            }
+
+        },
+        removeArmsToCart(armid, count) {
+            var element = this.getArmsOfCartById(armid);
+            if (element === undefined) return;
+            var indexElement = this.getIndexElementCartArmsById(armid);
+            this.cartArms[indexElement].count -= count;
+            if (this.cartArms[indexElement].count === 0)
+                this.cartArms.splice(indexElement, 1);
+
+        },
+
+        removeGoodsOutCart(index) { //удалить один элемент из корзины по индексу
+            return (this.goods.splice(index, 1));
+        },
+
+        clearCartArms() {
+            this.cartArms.length = 0;
+            this.renderAllCartArms();
+        },
+
+        renderAllCartArms() {
+            var container = document.getElementById(this.nameContainerBattle);
+            container.innerHTML = '';
+            if (this.cartArms.length > 0) {
+                for (let i of this.cartArms) {
+                    let html_ = '<br><span> Наименование: <b>' + i.armsname + '</b> кол-во: <b>' + i.count + '</b></span>';
+                    container.insertAdjacentHTML('beforeend', html_);
+                }
+                html_ = '<br>В корзине <b>' + this.getQuantCartArt() + '</b> товаров  на сумму <b>' + this.getCostCartArms() + '</b> рублей';
+
+            }
+            else html_ = '<br>В корзине пусто. Скорее купи что-нибудь!';
+            container.insertAdjacentHTML('beforeend', html_);
+
+            html_ = '<button id = "btn-clear-cart"> Очистить корзину </button>';
+            container.insertAdjacentHTML('afterbegin', html_);
+            document.getElementById('btn-clear-cart').addEventListener('click', () => this.clearCartArms());
+
+
+
+        }
+    }
+    outfit.init();
+
+    /* renderCatalogById_old(armid) {
+            var br = document.createElement('br');
+            var container = document.getElementById(this.nameContainerArms);
+            container.appendChild(br);
+            var span = document.createElement('span');
+            var text = document.createTextNode(this.getArmsOfCatalogById(armid).armsname);
+            span.appendChild(text);
+            container.appendChild(span);
+
+            var btn = document.createElement('button');
+            btn.dataset.armid = armid;
+            text = document.createTextNode('+');
+            btn.appendChild(text);
+            container.appendChild(btn);
+        }, */
+</script>
+
+</html>
