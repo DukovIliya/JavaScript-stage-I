@@ -3,14 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Змейка</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <h1>Основы Java Script! Домашнее задание №7</h1>
-    <h2>Заглушка</h2>
-    <p>В связи с новогодними праздниками не успеваю сдать ДЗ.</p>
+    <h4>Ваш счет: <span id="score">0</span></h4>
+    <div id="game-wrap">
+        <table id="game"></table>
+    </div>
+    <div id="menu">
+        <div id="playButton" class="menuButton">Старт</div>
+        <div id="newGameButton" class="menuButton">Новая игра</div>
+
+    </div>
+    <div id="settings">
+        <label class="nolimits-txt" for="nolimits">Убрать границы поля: <input id="nolimits" type="checkbox"
+                checked=""></label>
+    </div>
+
+    <script src="js.js"></script>
 </body>
 
 </html>
