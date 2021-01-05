@@ -3,26 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Змейка</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-    <h4>Ваш счет: <span id="score">0</span></h4>
-    <div id="game-wrap">
-        <table id="game"></table>
-    </div>
-    <div id="menu">
-        <div id="playButton" class="menuButton">Старт</div>
-        <div id="newGameButton" class="menuButton">Новая игра</div>
+    <h1>Основы Java Script! Домашнее задание №8</h1>
+    <h1>Спасибо за курс!</h1>
 
-    </div>
-    <div id="settings">
-        <label class="nolimits-txt" for="nolimits">Убрать границы поля: <input id="nolimits" type="checkbox"
-                checked=""></label>
-    </div>
+    <script>
+        //1. Для практикума из занятия 7 продумать, где можно применить замыкания.
+        // Предполагаю что замыкание можно использовать между переменными settings и объектом config. 
 
-    <script src="js.js"></script>
+        //2. Не выполняя кода, ответить, что выведет браузер и почему:
+        /* if (!("a" in window)) {
+            var a = 1;
+        }
+        alert(a); */
+        //переменная a будет создана в window и иметь значение undefined т.к создается как var и Это  выражение !("a" in window) будет равно false,
+        //а значит переменной ф не быдет присвоена единица, таким образом значение останется undefined
+
+
+        /*
+                var b = function a(x) {
+                    x && a(--x);
+                };
+                alert(a);
+                */
+        //область видимости функции а() ограничивается переменной b и вне переменной b, а вызвать функцию a - не получится. Таким образом будет a is not difined
+
+
+        /*function a(x) {
+            return x * 2;
+        }
+        var a;
+        alert(a);*/
+        //Сначала переменная a будет содержать значене undefined, потом в неё будет записана функция, когда мы выведем значение а - отобразится описание функции
+
+
+        /*function b(x, y, a) {
+            arguments[2] = 10;
+            alert(a);
+        }
+        b(1, 2, 3);*/
+        //arguments[2] = 10; установит значение третьего аргумента функции равным 10. Третьий аргумент это как раз а. после чего будет выведено значение a, т.е. 10
+
+
+        /*function a() {
+            alert(this);
+        }
+        a.call(null);*/
+        // первым аргументов в функции call передается значение которое будет использоваться как this внутри вызываемой функции, в нашем случает null.
+        //После того как запустил понял что это window :)
+
+        //Конечно не все примеры удалось сразу без запуска правльно решить. Но после запуска постарался разобраться как это работает и почему выдает такой ответ!
+
+    </script>
 </body>
 
 </html>
